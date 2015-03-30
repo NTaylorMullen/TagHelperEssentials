@@ -1,2 +1,2 @@
 # TagHelperEssentials
-Playground for testing out TagHelper features.
+Playground for testing TagHelper features.
