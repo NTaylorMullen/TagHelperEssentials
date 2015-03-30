@@ -1,2 +1,4 @@
 ﻿<p asp-visible="1 + 1 == 2">Should be visible</p>
 <p asp-visible="1 + 1 == 3">Should not be visible</p>
+<p>Normal ViewComponent invocation: @Component.Invoke("Custom", 4, "From view.")</p>
+<p>TagHelper ViewComponent invocation: <Custom style="color:red;" extraValue="Extra Value" count="3" /></p>

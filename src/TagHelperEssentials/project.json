@@ -2,10 +2,12 @@
     "description": "TagHelper essentials.",
     "version": "1.0.0-*",
     "dependencies": {
-        "Microsoft.AspNet.Razor.Runtime": "4.0.0-*"
+        "Microsoft.Framework.DependencyInjection": "1.0.0-*",
+        "Microsoft.Framework.NotNullAttribute.Internal": "1.0.0-*",
+        "Microsoft.AspNet.Mvc.Core": "6.0.0-*",
+        "Microsoft.AspNet.Mvc.Razor.Host": "6.0.0-*"
     },
     "frameworks": {
-        "net45": { },
         "dnx451": { },
         "dnxcore50": { }
     }

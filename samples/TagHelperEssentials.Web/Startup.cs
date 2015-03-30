@@ -8,6 +8,7 @@ namespace TagHelperEssentials.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddTagHelperEssentials();
         }
 
         public void Configure(IApplicationBuilder app)
