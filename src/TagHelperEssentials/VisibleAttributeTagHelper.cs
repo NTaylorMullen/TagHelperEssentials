@@ -2,7 +2,7 @@
 
 namespace TagHelperEssentials
 {
-    [TargetElement(Attributes = VisiblePropertyName)]
+    [HtmlTargetElement(Attributes = VisiblePropertyName)]
     public class VisibleAttributeTagHelper : TagHelper
     {
         private const string VisiblePropertyName = "asp-visible";

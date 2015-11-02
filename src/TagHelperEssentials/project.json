@@ -1,12 +1,12 @@
 {
     "description": "TagHelper essentials.",
     "version": "1.0.0-*",
-    "dependencies": {
-        "Microsoft.Framework.DependencyInjection": "1.0.0-*",
-        "Microsoft.Framework.NotNullAttribute.Internal": "1.0.0-*",
-        "Microsoft.AspNet.Mvc.Core": "6.0.0-*",
-        "Microsoft.AspNet.Mvc.Razor.Host": "6.0.0-*"
-    },
+  "dependencies": {
+    "Microsoft.Framework.DependencyInjection": "1.0.0-beta8",
+    "Microsoft.AspNet.Mvc.Core": "6.0.0-beta8",
+    "Microsoft.AspNet.Mvc.Razor.Host": "6.0.0-beta8",
+    "Microsoft.AspNet.Mvc.ViewFeatures": "6.0.0-beta8"
+  },
     "frameworks": {
         "dnx451": { },
         "dnxcore50": { }

@@ -10,9 +10,9 @@ namespace TagHelperEssentials
     public class TagHelperMvcRazorHost : MvcRazorHost
     {
         public TagHelperMvcRazorHost(
-            [NotNull] ICodeTreeCache codeTreeCache,
-            [NotNull] IViewComponentDescriptorProvider viewComponentDescriptorProvider)
-            : base(codeTreeCache)
+            IChunkTreeCache chunkTreeCache,
+            IViewComponentDescriptorProvider viewComponentDescriptorProvider)
+            : base(chunkTreeCache)
         {
             TagHelperDescriptorResolver = new ViewComponentTagHelperDescriptorResolver(
                 new TagHelperTypeResolver(),

@@ -7,7 +7,7 @@ namespace TagHelperEssentials
 {
     public static class TagHelperEssentialsServiceCollectionExtensions
     {
-        public static IServiceCollection AddTagHelperEssentials([NotNull] this IServiceCollection services)
+        public static IServiceCollection AddTagHelperEssentials(this IServiceCollection services)
         {
             services.AddTransient<IMvcRazorHost, TagHelperMvcRazorHost>();
 

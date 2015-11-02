@@ -1,19 +1,30 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.AspNet.Mvc.ViewFeatures;
+using Microsoft.AspNet.Mvc.ViewFeatures.Internal;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
 namespace TagHelperEssentials
 {
-    [TargetElement("__")]
+    [HtmlTargetElement("__")]
     public class ViewComponentTagHelper : ITagHelper
     {
         private readonly object[] _values = new object[10];
-        private int _parametersProvided = 0;
+        private readonly IViewComponentHelper _component;
+        private int _parametersProvided;
+
+        public ViewComponentTagHelper(IViewComponentHelper component)
+        {
+            _component = component;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
 
         int ITagHelper.Order { get; } = 0;
-
-        [Activate]
-        protected IViewComponentHelper Component { get; set; }
 
         public object Parameter0
         {
@@ -23,7 +34,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 1;
+                _parametersProvided++;
                 _values[0] = value;
             }
         }
@@ -36,7 +47,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 2;
+                _parametersProvided++;
                 _values[1] = value;
             }
         }
@@ -49,7 +60,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 3;
+                _parametersProvided++;
                 _values[2] = value;
             }
         }
@@ -62,7 +73,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 4;
+                _parametersProvided++;
                 _values[3] = value;
             }
         }
@@ -75,7 +86,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 5;
+                _parametersProvided++;
                 _values[4] = value;
             }
         }
@@ -88,7 +99,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 6;
+                _parametersProvided++;
                 _values[5] = value;
             }
         }
@@ -101,7 +112,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 7;
+                _parametersProvided++;
                 _values[6] = value;
             }
         }
@@ -114,7 +125,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 8;
+                _parametersProvided++;
                 _values[7] = value;
             }
         }
@@ -127,7 +138,7 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 9;
+                _parametersProvided++;
                 _values[8] = value;
             }
         }
@@ -140,13 +151,15 @@ namespace TagHelperEssentials
             }
             set
             {
-                _parametersProvided = 10;
+                _parametersProvided++;
                 _values[9] = value;
             }
         }
 
-        public async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public void Process(TagHelperContext context, TagHelperOutput output)
         {
+            ((ICanHasViewContext)_component).Contextualize(ViewContext);
+
             var parameters = new object[_parametersProvided];
 
             for (var i = 0; i < parameters.Length; i++)
@@ -154,13 +167,18 @@ namespace TagHelperEssentials
                 parameters[i] = _values[i];
             }
 
-            string componentResult = null;
-
-            componentResult = (await Component.InvokeAsync(output.TagName, parameters)).ToString();
+            var componentResult = _component.Invoke(output.TagName, parameters);
 
             output.SuppressOutput();
 
             output.Content.SetContent(componentResult);
         }
+
+#pragma warning disable 1998
+        public virtual async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        {
+            Process(context, output);
+        }
+#pragma warning restore 1998
     }
 }

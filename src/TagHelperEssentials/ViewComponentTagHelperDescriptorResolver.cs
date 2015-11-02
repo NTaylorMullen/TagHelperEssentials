@@ -5,7 +5,6 @@ using System.Reflection;
 using Microsoft.AspNet.Mvc.ViewComponents;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 using Microsoft.AspNet.Razor.TagHelpers;
-using Microsoft.Framework.Internal;
 
 namespace TagHelperEssentials
 {
@@ -17,9 +16,9 @@ namespace TagHelperEssentials
         private IEnumerable<TagHelperDescriptor> _viewComponentTagHelperDescriptors;
 
         public ViewComponentTagHelperDescriptorResolver(
-            [NotNull] TagHelperTypeResolver typeResolver,
-            [NotNull] IViewComponentDescriptorProvider viewComponentDescriptorProvider)
-            : base(typeResolver)
+            TagHelperTypeResolver typeResolver,
+            IViewComponentDescriptorProvider viewComponentDescriptorProvider)
+            : base(typeResolver, designTime: false)
         {
             _viewComponentDescriptorProvider = viewComponentDescriptorProvider;
         }
@@ -47,13 +46,15 @@ namespace TagHelperEssentials
                 if (TryGetViewComponentAttributeDescriptors(viewComponentDescriptor.Type, out attributeDescriptors))
                 {
                     resolvedDescriptors.Add(
-                        new TagHelperDescriptor(
-                            prefix,
-                            viewComponentDescriptor.ShortName,
-                            ViewComponentTagHelperType.FullName,
-                            ViewComponentTagHelperType.GetTypeInfo().Assembly.GetName().Name,
-                            attributeDescriptors,
-                            requiredAttributes: attributeDescriptors.Select(descriptor => descriptor.Name)));
+                        new TagHelperDescriptor
+                        {
+                            Prefix = prefix,
+                            TagName = viewComponentDescriptor.ShortName,
+                            TypeName = ViewComponentTagHelperType.FullName,
+                            AssemblyName = ViewComponentTagHelperType.GetTypeInfo().Assembly.GetName().Name,
+                            Attributes = attributeDescriptors,
+                            RequiredAttributes = attributeDescriptors.Select(descriptor => descriptor.Name)
+                        });
                 }
             }
 
@@ -79,10 +80,12 @@ namespace TagHelperEssentials
                 var parameter = methodParameters[i];
 
                 descriptors.Add(
-                    new TagHelperAttributeDescriptor(
-                        parameter.Name,
-                        "Parameter" + i,
-                        parameter.ParameterType.FullName));
+                    new TagHelperAttributeDescriptor
+                    {
+                        Name = parameter.Name,
+                        PropertyName = "Parameter" + i,
+                        TypeName = parameter.ParameterType.FullName
+                    });
             }
 
             attributeDescriptors = descriptors;
